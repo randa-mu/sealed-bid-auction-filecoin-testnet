@@ -71,11 +71,6 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         _;
     }
 
-    modifier onlyTimelockContract() {
-        require(msg.sender == address(blocklock), "Only timelock contract can call this.");
-        _;
-    }
-
     constructor(uint256 _biddingEndBlock, address blocklockContract) AbstractBlocklockReceiver(blocklockContract) {
         seller = msg.sender;
         biddingEnd = _biddingEndBlock;
@@ -121,7 +116,6 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         external
         override
         onlyAfter(biddingEnd)
-        onlyTimelockContract
     {
         require(bidsById[requestID].bidID != 0, "Bid ID does not exist");
         require(

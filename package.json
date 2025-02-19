@@ -28,6 +28,7 @@
   "homepage": "https://github.com/randa-mu/sealed-bid-auction-filecoin-testnet#readme",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "blocklock-js": "^0.0.7",
     "dotenv": "^16.4.7",
     "hardhat": "^2.22.18"
   },

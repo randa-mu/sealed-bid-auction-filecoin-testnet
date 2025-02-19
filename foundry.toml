@@ -1,0 +1,25 @@
+[profile.default]
+src = "src"
+out = "artifacts"
+libs = ["node_modules"]
+remappings = [
+    "@ds-test/=node_modules/blocklock-solidity/lib/forge-std/lib/ds-test/src/",
+    "@forge-std/=node_modules/blocklock-solidity/lib/forge-std/src/",
+    "@openzeppelin/=node_modules/@openzeppelin/",
+    "@openzeppelin/contracts-upgradeable/=node_modules/blocklock-solidity/lib/openzeppelin-contracts-upgradeable/contracts/",
+    "@openzeppelin/contracts/=node_modules/blocklock-solidity/lib/openzeppelin-contracts/contracts/",
+    "blocklock-js/=node_modules/blocklock-js/",
+    "blocklock-solidity/=node_modules/blocklock-solidity/",
+    "config/=node_modules/blocklock-solidity/config/",
+    "erc4626-tests/=node_modules/blocklock-solidity/lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/",
+    "eth-gas-reporter/=node_modules/eth-gas-reporter/",
+    "forge-std/=node_modules/blocklock-solidity/lib/forge-std/",
+    "halmos-cheatcodes/=node_modules/blocklock-solidity/lib/openzeppelin-contracts/lib/halmos-cheatcodes/",
+    "hardhat/=node_modules/hardhat/",
+    "openzeppelin-contracts-upgradeable/=node_modules/blocklock-solidity/lib/openzeppelin-contracts-upgradeable/",
+    "openzeppelin-contracts/=node_modules/blocklock-solidity/lib/openzeppelin-contracts/",
+    "src/=node_modules/blocklock-solidity/src/",
+    "test/=node_modules/blocklock-solidity/test/",
+]
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
