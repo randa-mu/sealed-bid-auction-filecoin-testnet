@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.28",
+  solidity: "0.8.24",
   networks: {
     calibration: {
       url: process.env.CALIBRATION_TESTNET_RPC_URL,
