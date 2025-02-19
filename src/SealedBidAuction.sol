@@ -2,9 +2,9 @@
 pragma solidity 0.8.24;
 
 // Import the Types library for managing ciphertexts
-import {TypesLib} from "blocklock-solidity/src/libraries/TypesLib.sol";
+import {TypesLib} from "@blocklock-solidity/src/libraries/TypesLib.sol";
 // Import the AbstractBlocklockReceiver for handling timelock decryption callbacks
-import {AbstractBlocklockReceiver} from "blocklock-solidity/src/AbstractBlocklockReceiver.sol";
+import {AbstractBlocklockReceiver} from "@blocklock-solidity/src/AbstractBlocklockReceiver.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 interface ISealedBidAuction {
