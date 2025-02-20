@@ -44,7 +44,6 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
     event BidUnsealed(uint256 indexed bidID, address indexed bidder, uint256 unsealedBid);
     event HighestBidFulfilled(address indexed bidder, uint256 amount);
     event ReservePriceClaimed(uint256 indexed bidID, address indexed claimant, uint256 amount);
-    event ForfeitedReservePriceClaimed(address auctioneer, uint256 amount);
 
     modifier onlyBefore(uint256 _block) {
         require(block.number < _block, "Block has passed.");
@@ -72,8 +71,9 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
     }
 
     constructor(uint256 _biddingEndBlock, address blocklockContract) AbstractBlocklockReceiver(blocklockContract) {
-        seller = msg.sender;
+        require(_biddingEndBlock > block.number, "Bidding must end after a future block.");
         biddingEndBlock = _biddingEndBlock;
+        seller = msg.sender;
     }
 
     // BID PHASES
@@ -105,6 +105,8 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
 
         pendingReturns[msg.sender] = reservePrice;
         totalBids += 1;
+
+        emit NewBid(bidID, msg.sender);
         return bidID;
     }
 
