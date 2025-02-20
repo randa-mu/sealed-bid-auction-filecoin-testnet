@@ -89,7 +89,7 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         returns (uint256)
     {
         uint256 bidID = bidderToBidID[msg.sender];
-        require(bidID == 0, "Only onw bid allowed per bidder.");
+        require(bidID == 0, "Only one bid allowed per bidder.");
         bidID = blocklock.requestBlocklock(biddingEndBlock, sealedBid);
         Bid memory newBid = Bid({
             bidID: bidID,
