@@ -25,7 +25,7 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
     }
 
     address public seller; // seller
-    uint256 public biddingEnd; // bidding end block number
+    uint256 public biddingEndBlock; // bidding end block number
     bool public auctionEnded; // bool indicating end of the auction or not
     bool public highestBidPaid; // bool indicating if auction winner has fulfilled their bid
     uint256 public totalBids; // Total number of bids placed
@@ -47,12 +47,12 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
     event ForfeitedReservePriceClaimed(address auctioneer, uint256 amount);
 
     modifier onlyBefore(uint256 _block) {
-        require(block.number < _block, "Block has passed");
+        require(block.number < _block, "Block has passed.");
         _;
     }
 
     modifier onlyAfter(uint256 _block) {
-        require(block.timestamp > _block, "Not yet allowed");
+        require(block.number > _block, "Not yet allowed.");
         _;
     }
 
@@ -73,7 +73,7 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
 
     constructor(uint256 _biddingEndBlock, address blocklockContract) AbstractBlocklockReceiver(blocklockContract) {
         seller = msg.sender;
-        biddingEnd = _biddingEndBlock;
+        biddingEndBlock = _biddingEndBlock;
     }
 
     // BID PHASES
@@ -84,13 +84,13 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
     function placeSealedBid(TypesLib.Ciphertext calldata sealedBid)
         external
         payable
-        onlyBefore(biddingEnd)
+        onlyBefore(biddingEndBlock)
         validateReservePrice
         returns (uint256)
     {
         uint256 bidID = bidderToBidID[msg.sender];
-        require(bidID == 0, "Only onw bid allowed per bidder");
-        bidID = blocklock.requestBlocklock(biddingEnd, sealedBid);
+        require(bidID == 0, "Only onw bid allowed per bidder.");
+        bidID = blocklock.requestBlocklock(biddingEndBlock, sealedBid);
         Bid memory newBid = Bid({
             bidID: bidID,
             bidder: msg.sender,
@@ -115,9 +115,9 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
     function receiveBlocklock(uint256 requestID, bytes calldata decryptionKey)
         external
         override
-        onlyAfter(biddingEnd)
+        onlyAfter(biddingEndBlock)
     {
-        require(bidsById[requestID].bidID != 0, "Bid ID does not exist");
+        require(bidsById[requestID].bidID != 0, "Bid ID does not exist.");
         require(
             bidsById[requestID].decryptionKey.length == 0, "Bid decryption key already received from timelock contract."
         );
@@ -156,22 +156,22 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
      * Phase 3. Auction Finalization
      */
     // Withdraw refundable reserve amounts paid during bidding
-    function withdrawRefund() external onlyAfter(biddingEnd) onlyAfterBidsUnsealed nonReentrant {
-        require(msg.sender != highestBidder, "Highest bidder cannot withdraw refund");
+    function withdrawRefund() external onlyAfter(biddingEndBlock) onlyAfterBidsUnsealed nonReentrant {
+        require(msg.sender != highestBidder, "Highest bidder cannot withdraw refund.");
         Bid memory bid = bids[msg.sender];
         uint256 amount = pendingReturns[bid.bidder];
-        require(amount > 0, "Nothing to withdraw");
+        require(amount > 0, "Nothing to withdraw.");
         pendingReturns[msg.sender] = 0;
         payable(msg.sender).transfer(amount);
         emit ReservePriceClaimed(bid.bidID, msg.sender, amount);
     }
 
     // Fulfil highest bid
-    function fulfillHighestBid() external payable onlyAfter(biddingEnd) onlyAfterBidsUnsealed {
-        require(highestBid > 0, "Highest bid is zero");
-        require(msg.sender == highestBidder, "Only the highest bidder can fulfil");
-        require(!highestBidPaid, "Payment has already been completed");
-        require(msg.value == highestBid - reservePrice, "Payment must be equal to highest bid minus the reserve amount");
+    function fulfillHighestBid() external payable onlyAfter(biddingEndBlock) onlyAfterBidsUnsealed {
+        require(highestBid > 0, "Highest bid is zero.");
+        require(msg.sender == highestBidder, "Only the highest bidder can fulfil.");
+        require(!highestBidPaid, "Payment has already been completed.");
+        require(msg.value == highestBid - reservePrice, "Payment must be equal to highest bid minus the reserve amount.");
 
         highestBidPaid = true;
         payable(seller).transfer(msg.value + reservePrice);
@@ -182,7 +182,7 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
 
     // Finalize auction
     function finalizeAuction() external onlyAfterBidsUnsealed {
-        require(!auctionEnded, "Auction already finalised");
+        require(!auctionEnded, "Auction already finalised.");
         auctionEnded = true;
         emit AuctionEnded(highestBidder, highestBid);
     }
