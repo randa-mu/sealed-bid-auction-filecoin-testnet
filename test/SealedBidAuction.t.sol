@@ -32,24 +32,23 @@ contract SealedBidAuctionTest is Test {
 
     uint256 bidAmount = 3 ether;
 
-        TypesLib.Ciphertext  sealedBid = TypesLib.Ciphertext({
-            u: BLS.PointG2({
-                x: [
-                    14142380308423906610328325205633754694002301558654408701934220147059967542660,
-                    4795984740938726483924720262587026838890051381570343702421443260575124596446
-                ],
-                y: [
-                    13301122453285478420056122708237526083484415709254283392885579853639158169617,
-                    11125759247493978573666410429063118092803139083876927879642973106997490249635
-                ]
-            }),
-            v: hex"63f745f4240f4708db37b0fa0e40309a37ab1a65f9b1be4ac716a347d4fe57fe",
-            w: hex"e8aadd66a9a67c00f134b1127b7ef85046308c340f2bb7cee431bd7bfe950bd4"
-        });
-        bytes  signature =
-            hex"02b3b2fa2c402d59e22a2f141e32a092603862a06a695cbfb574c440372a72cd0636ba8092f304e7701ae9abe910cb474edf0408d9dd78ea7f6f97b7f2464711";
-        bytes  decryptionKey = hex"7ec49d8f06b34d8d6b2e060ea41652f25b1325fafb041bba9cf24f094fbca259";
-        
+    TypesLib.Ciphertext sealedBid = TypesLib.Ciphertext({
+        u: BLS.PointG2({
+            x: [
+                14142380308423906610328325205633754694002301558654408701934220147059967542660,
+                4795984740938726483924720262587026838890051381570343702421443260575124596446
+            ],
+            y: [
+                13301122453285478420056122708237526083484415709254283392885579853639158169617,
+                11125759247493978573666410429063118092803139083876927879642973106997490249635
+            ]
+        }),
+        v: hex"63f745f4240f4708db37b0fa0e40309a37ab1a65f9b1be4ac716a347d4fe57fe",
+        w: hex"e8aadd66a9a67c00f134b1127b7ef85046308c340f2bb7cee431bd7bfe950bd4"
+    });
+    bytes signature =
+        hex"02b3b2fa2c402d59e22a2f141e32a092603862a06a695cbfb574c440372a72cd0636ba8092f304e7701ae9abe910cb474edf0408d9dd78ea7f6f97b7f2464711";
+    bytes decryptionKey = hex"7ec49d8f06b34d8d6b2e060ea41652f25b1325fafb041bba9cf24f094fbca259";
 
     function setUp() public {
         owner = vm.addr(1);
@@ -165,7 +164,7 @@ contract SealedBidAuctionTest is Test {
 
         decryptionSender.fulfilDecryptionRequest(bidID1, decryptionKey, signature);
 
-         vm.stopPrank();
+        vm.stopPrank();
 
         // Bidder fulfills the highest bid
         vm.startPrank(bidder); // Set bidder as the sender

@@ -171,7 +171,9 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         require(highestBid > 0, "Highest bid is zero.");
         require(msg.sender == highestBidder, "Only the highest bidder can fulfil.");
         require(!highestBidPaid, "Payment has already been completed.");
-        require(msg.value == highestBid - reservePrice, "Payment must be equal to highest bid minus the reserve amount.");
+        require(
+            msg.value == highestBid - reservePrice, "Payment must be equal to highest bid minus the reserve amount."
+        );
 
         highestBidPaid = true;
         payable(seller).transfer(msg.value + reservePrice);
