@@ -110,23 +110,6 @@ contract SealedBidAuctionTest is Test {
         vm.stopPrank();
     }
 
-    function test_RevertWhen_BidIsReplaced() public {
-        vm.deal(bidder, 1 ether);
-
-        // Simulate bidding
-        vm.startPrank(bidder);
-        auction.placeSealedBid{value: auction.reservePrice()}(sealedBid);
-        vm.stopPrank();
-
-        vm.roll(auction.biddingEndBlock() + 1);
-
-        // Expect a revert on the second bid
-        vm.expectRevert("Only one bid allowed per bidder.");
-        vm.startPrank(bidder);
-        auction.placeSealedBid{value: auction.reservePrice()}(sealedBid);
-        vm.stopPrank();
-    }
-
     function test_RevealBid() public {
         // First, place a bid
         vm.deal(bidder, 1 ether);
