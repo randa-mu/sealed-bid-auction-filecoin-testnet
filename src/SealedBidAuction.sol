@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.24;
+pragma solidity 0.8.28;
 
 // Import the Types library for managing ciphertexts
 import {TypesLib} from "@blocklock-solidity/src/libraries/TypesLib.sol";
