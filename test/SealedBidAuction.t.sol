@@ -130,11 +130,14 @@ contract SealedBidAuctionTest is Test {
 
         (,, uint256 unsealedAmount, address bidderAddressWithBidID,) = auction.getBidWithBidID(bidID);
         (,,, address bidderAddressWithBidder,) = auction.getBidWithBidder(bidder);
+        (uint256 highestBidAmount, address highestBidder) = auction.getHighestBid();
 
         assertEq(auction.highestBidder(), bidder, "Highest bidder should be bidder");
+        assertEq(highestBidder, bidder, "Highest bidder should be bidder");
         assertEq(bidderAddressWithBidID, bidder, "Bidder for bid ID 1 should be bidder");
         assertEq(bidderAddressWithBidder, bidder, "Bidder for bid ID 1 should be bidder 1");
         assertEq(auction.highestBid(), bidAmount, "Highest bid should be bid amount");
+        assertEq(highestBidAmount, bidAmount, "Highest bid should be bid amount");
         assertEq(unsealedAmount, bidAmount, "Unsealed amount should be bid amount");
     }
 
