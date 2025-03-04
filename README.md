@@ -64,7 +64,7 @@ forge script script/SealedBidAuction.s.sol --rpc-url $CALIBRATION_TESTNET_RPC_UR
 - Prevents frontrunning attacks by placing encrypted bids only decrypted at the end of the bidding period.
 
 ## 📖 Tutorial & Documentation
-Check out the detailed tutorial on [our blog](#) (link to tutorial).
+Check out the detailed tutorial on [our blog]([link to tutorial](https://drand.love/blog/2025/03/04/onchain-sealed-bid-auction/)).
 
 
 ## Licensing
