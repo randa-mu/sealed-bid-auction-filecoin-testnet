@@ -230,11 +230,8 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         revealed = bidsById[bidderToBidID[bidder]].revealed;
     }
 
-    function getHighestBidder() external view returns (address) {
-        return highestBidder;
-    }
-
-    function getHighestBid() external view returns (uint256) {
-        return highestBid;
+    function getHighestBid() external view returns (uint256 highestBidAmount, address highestBidderAddress) {
+        highestBidAmount = highestBid;
+        highestBidderAddress = highestBidder;
     }
 }
