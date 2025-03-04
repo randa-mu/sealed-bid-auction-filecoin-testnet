@@ -70,7 +70,7 @@ async function encryptAndPlaceBid(
 async function main() {
     // Change these values as needed
     const PRIVATE_KEY = process.env.CALIBRATION_TESTNET_PRIVATE_KEY;
-    const CONTRACT_ADDRESS = "0x033B6302e593eb39813dCC521cde0d660189eDc3";
+    const CONTRACT_ADDRESS = "0x68Ded4e9670f507934fBc9D2d8f07b4F3E471EbD";
     const BID_AMOUNT = "4"; // Bid amount in ETH
 
     // Ensure required values are provided

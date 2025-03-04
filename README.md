@@ -3,10 +3,10 @@
 This repository provides a step-by-step guide to implementing a timelock encryption-based **sealed-bid auction** using Solidity. In a sealed bid auction, bidders submit their bids privately (encrypted bids are submitted on-chain), and only after the bidding phase ends is the winner revealed (encrypted bids are automatically decrypted on-chain at the end of the bidding phase).
 
 ## 📌 Features
-- ✅ Private bidding using encrypted bids
-- ✅ Bidding phase and reveal phase
-- ✅ Automatic winner determination
-- ✅ Secure and transparent auction process
+- Private bidding using encrypted bids
+- Bidding phase and reveal phase
+- Automatic winner determination
+- Secure and transparent auction process
 
 ## 📂 Repository Structure
 ```
@@ -14,7 +14,7 @@ This repository provides a step-by-step guide to implementing a timelock encrypt
 ├── src/   # Solidity smart contracts
 ├── scripts/     # Deployment scripts
 ├── test/        # Unit tests for the contract
-├── utils/     # Smart contract interaction scripts
+├── utils/       # Smart contract interaction scripts
 └── README.md    # Project guide
 ```
 
