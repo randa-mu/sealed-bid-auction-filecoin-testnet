@@ -1,66 +1,37 @@
-## Foundry
+# 🏦 Sealed Bid Auction Smart Contract Tutorial
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This repository provides a step-by-step guide to implementing a timelock encryption-based **sealed-bid auction** using Solidity. In a sealed bid auction, bidders submit their bids privately (encrypted bids are submitted on-chain), and only after the bidding phase ends is the winner revealed (encrypted bids are automatically decrypted on-chain at the end of the bidding phase).
 
-Foundry consists of:
+## 📌 Features
+- ✅ Private bidding using encrypted bids
+- ✅ Bidding phase and reveal phase
+- ✅ Automatic winner determination
+- ✅ Secure and transparent auction process
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+## 📂 Repository Structure
+```
+📦 sealed-bid-auction
+├── src/   # Solidity smart contracts
+├── scripts/     # Deployment scripts
+├── test/        # Unit tests for the contract
+├── utils/     # Smart contract interaction scripts
+└── README.md    # Project guide
 ```
 
-### Test
 
-```shell
-$ forge test
-```
+## 📜 How It Works
+1. **Bidding Phase:** Users submit encrypted bids along with a deposit (non-refundable for highest bidder at the end of the bidding period).  
+2. **Reveal Phase:** Bids are automatically decrypted at the end of the bidding period.  
+3. **Winner Selection:** The highest valid bidder wins.
 
-### Format
+## 🔒 Security Considerations
+- Ensures bidders cannot manipulate their bids after submission.
+- Prevents frontrunning attacks by placing encrypted bids only decrypted at the end of the bidding period.
 
-```shell
-$ forge fmt
-```
+## 📖 Tutorial & Documentation
+Check out the detailed tutorial on [our blog](#) (link to tutorial).
 
-### Gas Snapshots
 
-```shell
-$ forge snapshot
-```
+## Licensing
 
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+This source code is licensed under the MIT License which can be accessed [here](LICENSE).
