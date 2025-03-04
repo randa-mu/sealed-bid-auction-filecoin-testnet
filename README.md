@@ -1,6 +1,6 @@
 # 🏦 Sealed Bid Auction Smart Contract Tutorial
 
-This repository provides a step-by-step guide to implementing a timelock encryption-based **sealed-bid auction** using Solidity. In a sealed bid auction, bidders submit their bids privately (encrypted bids are submitted on-chain), and only after the bidding phase ends is the winner revealed (encrypted bids are automatically decrypted on-chain at the end of the bidding phase).
+This repository provides the source code for the Sealed Bid Auction Smart Contract Tutorial which is a step-by-step Solidity guide for implementing a timelock encryption-based **sealed-bid auction** on the Filecoin Calibration Testnet. In a sealed bid auction, bidders submit their bids privately (encrypted bids are submitted on-chain), and only after the bidding phase ends is the winner revealed (encrypted bids are automatically decrypted on-chain at the end of the bidding phase).
 
 ## 📌 Features
 - Private bidding using encrypted bids
