@@ -1,0 +1,36 @@
+{
+  "name": "sealed-bid-auction-filecoin-testnet",
+  "version": "1.0.0",
+  "description": "sealed bid auction smart contract deployed on the filecoin calibration testnet",
+  "main": "index.js",
+  "scripts": {
+    "test": "forge test",
+    "compile": "forge build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/randa-mu/sealed-bid-auction-filecoin-testnet.git"
+  },
+  "keywords": [
+    "timelock",
+    "encryption",
+    "sealed-bid",
+    "smart",
+    "contract",
+    "solidity",
+    "filecoin",
+    "randamu"
+  ],
+  "author": "najienka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/randa-mu/sealed-bid-auction-filecoin-testnet/issues"
+  },
+  "homepage": "https://github.com/randa-mu/sealed-bid-auction-filecoin-testnet#readme",
+  "devDependencies": {
+    "blocklock-js": "^0.0.7",
+    "dotenv": "^16.4.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
