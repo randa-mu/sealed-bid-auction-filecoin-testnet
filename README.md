@@ -2,7 +2,7 @@
 
 This repository provides the source code for a Sealed Bid Auction Smart Contract Tutorial which is a step-by-step Solidity guide for implementing a timelock encryption-based **sealed-bid auction** on the Filecoin Calibration Testnet. In a sealed bid auction, bidders submit their bids privately (encrypted bids are submitted on-chain), and only after the bidding phase ends is the winner revealed (encrypted bids are automatically decrypted on-chain at the end of the bidding phase).
 
-## 📌 Features
+## Features
 - **Private Bidding:** Utilizes timelock encryption to keep bids confidential until the reveal phase.
 - **Phased Auction Process:** Structured into encryption, bidding, revealing, and settlement phases.
 - **On-Chain Decryption:** Employs smart contracts to automatically decrypt and reveal bids at the designated block.
@@ -22,10 +22,13 @@ sealed-bid-auction
 ## Getting Started
 
 ### Prerequisites
+
 - **Node.js** and **Yarn** installed. Verify installations with:
-  ```sh
+
+```sh
   node --version
   yarn --version
+```
 
 ### Install Dependencies
 
@@ -66,7 +69,8 @@ forge script script/SealedBidAuction.s.sol --rpc-url $CALIBRATION_TESTNET_RPC_UR
 - Prevents frontrunning attacks by placing encrypted bids only decrypted at the end of the bidding period.
 
 ## Tutorial & Documentation
-Check out the detailed tutorial on [our blog](https://drand.love/blog/2025/03/04/onchain-sealed-bid-auction/).
+Check out the detailed tutorial on [our blog](https://drand.love/blog/2025/03/04/onchain-sealed-bid-auction/) or in the [tutorial](Tutorial.md) file.
+
 
 
 ## Licensing
