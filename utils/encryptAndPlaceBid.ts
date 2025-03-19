@@ -51,7 +51,7 @@ async function encryptAndPlaceBid(
 
         if (!receipt) {
             throw new Error("Transaction has not been mined");
-        }  
+        }
 
         // Fetch bid id and bidder address
         const bidder = await wallet.getAddress();
