@@ -105,7 +105,7 @@ contract SealedBidAuctionTest is Test {
     function test_BidPlacement() public {
         vm.deal(bidder, 1 ether); // Give bidder 1 ether for reserve price payment requirement
         vm.startPrank(bidder);
-        auction.placeSealedBid{value: auction.reservePrice()}(sealedBid); // Place a sealed bid of 3 ether in wei
+        auction.placeSealedBid{value: auction.RESERVE_PRICE()}(sealedBid); // Place a sealed bid of 3 ether in wei
         assertEq(auction.totalBids(), 1, "Bid count should be 1");
         vm.stopPrank();
     }
@@ -114,7 +114,7 @@ contract SealedBidAuctionTest is Test {
         // First, place a bid
         vm.deal(bidder, 1 ether);
         vm.startPrank(bidder);
-        uint256 bidID = auction.placeSealedBid{value: auction.reservePrice()}(sealedBid);
+        uint256 bidID = auction.placeSealedBid{value: auction.RESERVE_PRICE()}(sealedBid);
         vm.stopPrank();
 
         // Move to the auction end block to end the auction
@@ -145,7 +145,7 @@ contract SealedBidAuctionTest is Test {
         // Bidder places a bid
         vm.deal(bidder, 5 ether);
         vm.startPrank(bidder);
-        uint256 bidID1 = auction.placeSealedBid{value: auction.reservePrice()}(sealedBid);
+        uint256 bidID1 = auction.placeSealedBid{value: auction.RESERVE_PRICE()}(sealedBid);
         vm.stopPrank();
 
         // Move to the auction end block to end the auction
@@ -160,7 +160,7 @@ contract SealedBidAuctionTest is Test {
 
         // Bidder fulfills the highest bid
         vm.startPrank(bidder); // Set bidder as the sender
-        auction.fulfillHighestBid{value: bidAmount - auction.reservePrice()}();
+        auction.fulfillHighestBid{value: bidAmount - auction.RESERVE_PRICE()}();
         vm.stopPrank();
 
         assert(auction.highestBidPaid());
@@ -170,7 +170,7 @@ contract SealedBidAuctionTest is Test {
         // Bidder places a bid
         vm.deal(bidder, 5 ether);
         vm.startPrank(bidder);
-        uint256 bidID1 = auction.placeSealedBid{value: auction.reservePrice()}(sealedBid);
+        uint256 bidID1 = auction.placeSealedBid{value: auction.RESERVE_PRICE()}(sealedBid);
         vm.stopPrank();
 
         // Move to the auction end block to end the auction
@@ -185,7 +185,7 @@ contract SealedBidAuctionTest is Test {
 
         // Bidder fulfills the highest bid
         vm.startPrank(bidder); // Set bidder as the sender
-        auction.fulfillHighestBid{value: bidAmount - auction.reservePrice()}();
+        auction.fulfillHighestBid{value: bidAmount - auction.RESERVE_PRICE()}();
         vm.stopPrank();
 
         assert(auction.highestBidPaid());
@@ -201,7 +201,7 @@ contract SealedBidAuctionTest is Test {
         // Bidder places a bid
         vm.deal(bidder, 5 ether);
         vm.startPrank(bidder);
-        uint256 bidID1 = auction.placeSealedBid{value: auction.reservePrice()}(sealedBid);
+        uint256 bidID1 = auction.placeSealedBid{value: auction.RESERVE_PRICE()}(sealedBid);
         vm.stopPrank();
 
         // Move to the auction end block to end the auction
@@ -216,7 +216,7 @@ contract SealedBidAuctionTest is Test {
 
         // Bidder fulfills the highest bid
         vm.startPrank(bidder); // Set bidder as the sender
-        auction.fulfillHighestBid{value: bidAmount - auction.reservePrice()}();
+        auction.fulfillHighestBid{value: bidAmount - auction.RESERVE_PRICE()}();
         vm.stopPrank();
 
         assert(auction.highestBidPaid());

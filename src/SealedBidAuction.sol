@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.28;
 
-// Import the Types library for managing ciphertexts
+// Import the Types library for managing ciphertexts.
 import {TypesLib} from "@blocklock-solidity/src/libraries/TypesLib.sol";
-// Import the AbstractBlocklockReceiver for handling timelock decryption callbacks
+// Import the AbstractBlocklockReceiver for handling timelock decryption callbacks.
 import {AbstractBlocklockReceiver} from "@blocklock-solidity/src/AbstractBlocklockReceiver.sol";
+// Import ReentrancyGuard which is an Openzeppelin solidity library that helps prevent reentrant calls to a function.
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 interface ISealedBidAuction {
@@ -24,8 +25,9 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         bool revealed; // Status of whether the bid has been revealed
     }
 
-    address public seller; // seller
-    uint256 public biddingEndBlock; // bidding end block number
+    uint256 public constant RESERVE_PRICE = 0.01 ether;
+    address public immutable seller; // seller
+    uint256 public immutable biddingEndBlock; // bidding end block number
     bool public auctionEnded; // bool indicating end of the auction or not
     bool public highestBidPaid; // bool indicating if auction winner has fulfilled their bid
     uint256 public totalBids; // Total number of bids placed
@@ -37,7 +39,6 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
     mapping(uint256 => Bid) public bidsById; // Mapping of bid IDs to bid details
     mapping(address => uint256) public bidderToBidID; // Mapping of bidders to their bid IDs
     mapping(address => uint256) public pendingReturns; // mapping of bidders to their pending reservePrice refunds
-    uint256 public reservePrice = 0.01 ether;
 
     event NewBid(uint256 indexed bidID, address indexed bidder);
     event AuctionEnded(address winner, uint256 highestBid);
@@ -56,7 +57,7 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
     }
 
     modifier validateReservePrice() {
-        require(msg.value == reservePrice, "Bid must be accompanied by a deposit equal to the reserve price.");
+        require(msg.value == RESERVE_PRICE, "Bid must be accompanied by a deposit equal to the reserve price.");
         _;
     }
 
@@ -103,7 +104,7 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         bidsById[bidID] = newBid;
         bidderToBidID[msg.sender] = bidID;
 
-        pendingReturns[msg.sender] = reservePrice;
+        pendingReturns[msg.sender] = RESERVE_PRICE;
         totalBids += 1;
 
         emit NewBid(bidID, msg.sender);
@@ -146,7 +147,7 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         bid.revealed = true;
         revealedBidsCount += 1;
 
-        if (unsealedBid > highestBid && unsealedBid > reservePrice) {
+        if (unsealedBid > highestBid && unsealedBid > RESERVE_PRICE) {
             highestBid = unsealedBid;
             highestBidder = bid.bidder;
         }
@@ -174,14 +175,12 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         require(msg.sender == highestBidder, "Only the highest bidder can fulfil.");
         require(!highestBidPaid, "Payment has already been completed.");
         require(
-            msg.value == highestBid - reservePrice, "Payment must be equal to highest bid minus the reserve amount."
+            msg.value == highestBid - RESERVE_PRICE, "Payment must be equal to highest bid minus the reserve amount."
         );
-
         highestBidPaid = true;
-        payable(seller).transfer(msg.value + reservePrice);
         pendingReturns[highestBidder] = 0;
-
-        emit HighestBidFulfilled(msg.sender, msg.value + reservePrice);
+        payable(seller).transfer(msg.value + RESERVE_PRICE);
+        emit HighestBidFulfilled(msg.sender, msg.value + RESERVE_PRICE);
     }
 
     // Finalize auction
