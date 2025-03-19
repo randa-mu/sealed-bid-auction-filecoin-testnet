@@ -50,6 +50,9 @@ forge test
 
 ### Deploying the Contract to the Filecoin Calibration Testnet
 
+To deploy and interact with the contract, copy over the required variables (i.e., calibration testnet rpc url and private key linked to a wallet with test FIL tokens) declared in the `.env.example` file into a `.env` file and populate them. 
+
+
 ```sh
 source .env
 
@@ -74,5 +77,4 @@ Check out the detailed tutorial on [our blog](https://drand.love/blog/2025/03/04
 
 
 ## Licensing
-
 This source code is licensed under the MIT License which can be accessed [here](LICENSE).
