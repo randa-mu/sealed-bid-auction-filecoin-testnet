@@ -7,3 +7,4 @@ config/=config/
 
 @openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
 @blocklock-solidity/src/=lib/blocklock-solidity/src/
+@randomness-solidity/src/=lib/randomness-solidity/src/

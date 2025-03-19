@@ -8,6 +8,10 @@ import {AbstractBlocklockReceiver} from "@blocklock-solidity/src/AbstractBlocklo
 // Import ReentrancyGuard which is an Openzeppelin solidity library that helps prevent reentrant calls to a function.
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
+/// @title Sealed Bid Auction interface
+/// @author Randamu developers
+/// @notice An interface for a sealed bid auction smart contract
+/// allowing encrypted bids which are decrypted at a future block number.
 interface ISealedBidAuction {
     function placeSealedBid(TypesLib.Ciphertext calldata sealedBid) external payable returns (uint256);
     function withdrawRefund() external;
@@ -15,6 +19,10 @@ interface ISealedBidAuction {
     function finalizeAuction() external;
 }
 
+/// @title Sealed Bid Auction contract
+/// @author Randamu developers
+/// @notice A bid smart contract which allows sealed bids to be made in an auction.
+/// The bids are automatically decrypted at a future block number (block number that closes the bidding window).
 contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, ReentrancyGuard {
     struct Bid {
         uint256 bidID; // Unique identifier for the bid
