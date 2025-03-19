@@ -25,8 +25,8 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         bool revealed; // Status of whether the bid has been revealed
     }
 
-    uint256 public constant RESERVE_PRICE = 0.01 ether;
-    address public immutable seller; // seller
+    uint256 public constant RESERVE_PRICE = 0.01 ether; // the reserve price to pay when placing a bid
+    address public immutable seller; // the seller address
     uint256 public immutable biddingEndBlock; // bidding end block number
     bool public auctionEnded; // bool indicating end of the auction or not
     bool public highestBidPaid; // bool indicating if auction winner has fulfilled their bid
