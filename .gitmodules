@@ -7,3 +7,6 @@
 [submodule "lib/blocklock-solidity"]
 	path = lib/blocklock-solidity
 	url = https://github.com/randa-mu/blocklock-solidity
+[submodule "lib/randomness-solidity"]
+	path = lib/randomness-solidity
+	url = https://github.com/randa-mu/randomness-solidity

@@ -1,4 +1,4 @@
-import { ethers, getBytes, parseEther, Result, EventFragment, Interface, TransactionReceipt } from "ethers";
+import { ethers, getBytes } from "ethers";
 // @ts-ignore
 import { Blocklock, SolidityEncoder, encodeCiphertextToSolidity } from "blocklock-js";
 import dotenv from "dotenv";
@@ -36,6 +36,7 @@ async function encryptAndPlaceBid(
         // Get block height for bidding deadline
         const blockHeight = await sealedBidContract.biddingEndBlock();
 
+        // Encode message for encryption
         const msg = ethers.parseEther(bidAmount);
         const encoder = new SolidityEncoder()
         const msgBytes = encoder.encodeUint256(msg);
@@ -45,7 +46,7 @@ async function encryptAndPlaceBid(
         const ciphertext = blocklockjs.encrypt(encodedMessage, blockHeight, BLOCKLOCK_DEFAULT_PUBLIC_KEY);
 
         // Send sealed bid transaction
-        const reservePrice = await sealedBidContract.reservePrice();
+        const reservePrice = await sealedBidContract.RESERVE_PRICE();
         const tx = await sealedBidContract.placeSealedBid(encodeCiphertextToSolidity(ciphertext), { value: reservePrice });
         const receipt = await tx.wait(1);
 
@@ -70,7 +71,7 @@ async function encryptAndPlaceBid(
 async function main() {
     // Change these values as needed
     const PRIVATE_KEY = process.env.CALIBRATION_TESTNET_PRIVATE_KEY;
-    const CONTRACT_ADDRESS = "0x68Ded4e9670f507934fBc9D2d8f07b4F3E471EbD";
+    const CONTRACT_ADDRESS = "0xF9FB4cA00fd8249Ad1Db13433D94d990eD9F6F36";
     const BID_AMOUNT = "4"; // Bid amount in ETH
 
     // Ensure required values are provided

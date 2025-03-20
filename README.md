@@ -59,6 +59,8 @@ source .env
 forge script script/SealedBidAuction.s.sol --rpc-url $CALIBRATION_TESTNET_RPC_URL --private-key $CALIBRATION_TESTNET_PRIVATE_KEY --broadcast
 ```
 
+For common deployment issues (e.g., setting the gas estimate multiplier -g, --gas-estimate-multiplier) with the Filecoin calibration testnet, please refer to the  [FEVM (Ethereum Virtual Machine on Filecoin) Foundry toolkit](https://github.com/filecoin-project/fevm-foundry-kit).
+
 
 ## How It Works
 1. Encrypting Your Bid (Off-Chain): Bidders encrypt their bid amounts off-chain, generating ciphertexts for submission.
@@ -73,7 +75,6 @@ forge script script/SealedBidAuction.s.sol --rpc-url $CALIBRATION_TESTNET_RPC_UR
 
 ## Tutorial & Documentation
 Check out the detailed tutorial on [our blog](https://drand.love/blog/2025/03/04/onchain-sealed-bid-auction/).
-
 
 
 ## Licensing
