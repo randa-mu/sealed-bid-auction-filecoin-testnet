@@ -86,9 +86,8 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
     }
 
     // BID PHASES
-    /**
-     * Phase 1. Bidding Phase
-     */
+    
+    // Phase 1. Bidding Phase
     // Submit a sealed bid
     function placeSealedBid(TypesLib.Ciphertext calldata sealedBid)
         external
@@ -119,9 +118,7 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         return bidID;
     }
 
-    /**
-     * Phase 2. Reveal Phase
-     */
+    // Phase 2. Reveal Phase
     // Unseal sealed bid
     function receiveBlocklock(uint256 requestID, bytes calldata decryptionKey)
         external
@@ -163,9 +160,7 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         emit BidUnsealed(bidID, bid.bidder, unsealedBid);
     }
 
-    /**
-     * Phase 3. Auction Finalization
-     */
+    // Phase 3. Auction Finalization
     // Withdraw refundable reserve amounts paid during bidding
     function withdrawRefund() external onlyAfter(biddingEndBlock) onlyAfterBidsUnsealed nonReentrant {
         require(msg.sender != highestBidder, "Highest bidder cannot withdraw refund.");
