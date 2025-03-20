@@ -85,10 +85,12 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         seller = msg.sender;
     }
 
-    // BID PHASES
-    
-    // Phase 1. Bidding Phase
-    // Submit a sealed bid
+    /// BID PHASES
+
+    /// @dev Phase 1. Bidding Phase
+    /// @notice Submit a sealed bid to participate in the auction.
+    /// @param sealedBid The encrypted bid amount to submit to the auction.
+    /// @return bidID The unique identifier for the submitted bid.
     function placeSealedBid(TypesLib.Ciphertext calldata sealedBid)
         external
         payable
@@ -118,8 +120,10 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         return bidID;
     }
 
-    // Phase 2. Reveal Phase
-    // Unseal sealed bid
+    /// @dev Phase 2. Reveal Phase
+    /// @notice Unseals the sealed bid after the bidding phase has ended.
+    /// @param requestID The unique identifier for the bid to unseal.
+    /// @param decryptionKey The key used to decrypt the sealed bid.
     function receiveBlocklock(uint256 requestID, bytes calldata decryptionKey)
         external
         override
@@ -145,6 +149,9 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         emit BidUnsealed(bid.bidID, bid.bidder, bid.unsealedBid);
     }
 
+    /// @dev Updates the highest bid during the reveal phase.
+    /// @param bidID The unique identifier of the bid being evaluated.
+    /// @param unsealedBid The decrypted bid amount.
     function updateHighestBid(uint256 bidID, uint256 unsealedBid) internal {
         Bid storage bid = bidsById[bidID];
 
@@ -160,8 +167,9 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         emit BidUnsealed(bidID, bid.bidder, unsealedBid);
     }
 
-    // Phase 3. Auction Finalization
-    // Withdraw refundable reserve amounts paid during bidding
+    /// @dev Phase 3. Auction Finalization
+    /// @notice Allows bidders (except the highest bidder) to withdraw refundable reserve amounts.
+    /// @return The amount to withdraw as a refund.
     function withdrawRefund() external onlyAfter(biddingEndBlock) onlyAfterBidsUnsealed nonReentrant {
         require(msg.sender != highestBidder, "Highest bidder cannot withdraw refund.");
         Bid memory bid = bids[msg.sender];
@@ -172,7 +180,9 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         emit ReservePriceClaimed(bid.bidID, msg.sender, amount);
     }
 
-    // Fulfil highest bid
+    /// @dev Fulfill the highest bid after the bidding ends and bids are unsealed.
+    /// @notice Only the highest bidder can fulfill the bid and pay the difference.
+    /// @param msg.value The value sent in the transaction must equal the highest bid minus the reserve price.
     function fulfillHighestBid() external payable onlyAfter(biddingEndBlock) onlyAfterBidsUnsealed {
         require(highestBid > 0, "Highest bid is zero.");
         require(msg.sender == highestBidder, "Only the highest bidder can fulfil.");
@@ -186,16 +196,23 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         emit HighestBidFulfilled(msg.sender, msg.value + RESERVE_PRICE);
     }
 
-    // Finalize auction
+    /// @dev Finalizes the auction and declares the winner.
+    /// @notice Marks the auction as ended and emits an event with the winning bid and bidder.
     function finalizeAuction() external onlyAfterBidsUnsealed {
         require(!auctionEnded, "Auction already finalised.");
         auctionEnded = true;
         emit AuctionEnded(highestBidder, highestBid);
     }
 
-    /**
-     * Getters
-     */
+    /// GETTERS
+
+    /// @dev Retrieves bid details using the bid ID.
+    /// @param bidID The unique identifier for the bid.
+    /// @return sealedBid The encrypted sealed bid.
+    /// @return decryptionKey The decryption key used for revealing the bid.
+    /// @return unsealedBid The decrypted bid amount.
+    /// @return bidder The address of the bidder.
+    /// @return revealed Whether the bid has been revealed.
     function getBidWithBidID(uint256 bidID)
         external
         view
@@ -214,6 +231,13 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         revealed = bidsById[bidID].revealed;
     }
 
+    /// @dev Retrieves bid details using the bidder's address.
+    /// @param bidder The address of the bidder.
+    /// @return sealedBid The encrypted sealed bid.
+    /// @return decryptionKey The decryption key used for revealing the bid.
+    /// @return unsealedBid The decrypted bid amount.
+    /// @return _bidder The address of the bidder.
+    /// @return revealed Whether the bid has been revealed.
     function getBidWithBidder(address bidder)
         external
         view
@@ -232,6 +256,9 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
         revealed = bidsById[bidderToBidID[bidder]].revealed;
     }
 
+    /// @dev Retrieves the current highest bid and bidder's address.
+    /// @return highestBidAmount The amount of the highest bid.
+    /// @return highestBidderAddress The address of the highest bidder.
     function getHighestBid() external view returns (uint256 highestBidAmount, address highestBidderAddress) {
         highestBidAmount = highestBid;
         highestBidderAddress = highestBidder;
