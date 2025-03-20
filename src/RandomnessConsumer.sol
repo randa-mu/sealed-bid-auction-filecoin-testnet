@@ -10,7 +10,6 @@ import {RandomnessReceiverBase} from "@randomness-solidity/src/RandomnessReceive
 /// The library is available at: https://github.com/randa-mu/randomness-solidity/tree/main
 /// The library also contains logic for array shuffling using Feistel shuffle
 /// and selecting n items randomly from an array
-/// Deployed at: 0x410354CCce2c9d99bfD1968F91d37767beE97315
 contract RandomnessConsumer is RandomnessReceiverBase {
     // RandomnessSender proxy address on Filecoin calibration testnet
     address public constant RANDOMNESS_SENDER = 0x9c789bc7F2B5c6619Be1572A39F2C3d6f33001dC;

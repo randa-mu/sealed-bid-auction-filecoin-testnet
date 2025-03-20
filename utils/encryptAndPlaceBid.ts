@@ -1,4 +1,4 @@
-import { ethers, getBytes, parseEther, Result, EventFragment, Interface, TransactionReceipt } from "ethers";
+import { ethers, getBytes } from "ethers";
 // @ts-ignore
 import { Blocklock, SolidityEncoder, encodeCiphertextToSolidity } from "blocklock-js";
 import dotenv from "dotenv";
