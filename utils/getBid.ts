@@ -60,8 +60,8 @@ async function getBidDetails(bidID: bigint, contractAddress: string) {
 // Main function to handle script execution
 async function main() {
   // Define bid ID and contract address
-  const bidId: string = "131"; // Change this as needed
-  const contractAddress: string = "0xF3bbd8D0208b3d0B43014DF3c596dFd349d09E46"; // Change this as needed
+  const bidId: string = "135"; // Change this as needed
+  const contractAddress: string = "0xF9FB4cA00fd8249Ad1Db13433D94d990eD9F6F36"; // Change this as needed
 
   // Convert bid ID to BigInt
   const bidID = BigInt(bidId);

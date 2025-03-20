@@ -10,7 +10,7 @@ contract SealedBidAuctionScript is Script {
     function run() external {
         console.log("Current chain height: ", block.number);
 
-        uint256 biddingDurationInBlocks = block.number + 20;
+        uint256 biddingDurationInBlocks = block.number + 10;
         address blocklockSenderContractAddress = 0xfF66908E1d7d23ff62791505b2eC120128918F44;
 
         console.log("Bid closes at chain height: ", biddingDurationInBlocks);
