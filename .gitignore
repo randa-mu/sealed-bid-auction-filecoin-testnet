@@ -19,3 +19,6 @@ ignition/deployments/chain-31337
 
 # Foundry files
 /broadcast
+
+# contract interaction files
+foundry.txt 

@@ -59,7 +59,7 @@ source .env
 forge script script/SealedBidAuction.s.sol --rpc-url $CALIBRATION_TESTNET_RPC_URL --private-key $CALIBRATION_TESTNET_PRIVATE_KEY --broadcast
 ```
 
-For common deployment issues with the Filecoin calibration testnet, please refer to the  [FEVM (Ethereum Virtual Machine on Filecoin) Foundry toolkit](https://github.com/filecoin-project/fevm-foundry-kit).
+For common deployment issues (e.g., setting the gas estimate multiplier -g, --gas-estimate-multiplier) with the Filecoin calibration testnet, please refer to the  [FEVM (Ethereum Virtual Machine on Filecoin) Foundry toolkit](https://github.com/filecoin-project/fevm-foundry-kit).
 
 
 ## How It Works

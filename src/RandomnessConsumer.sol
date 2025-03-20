@@ -12,7 +12,8 @@ import {RandomnessReceiverBase} from "@randomness-solidity/src/RandomnessReceive
 /// and selecting n items randomly from an array
 /// Deployed at: 0x410354CCce2c9d99bfD1968F91d37767beE97315
 contract RandomnessConsumer is RandomnessReceiverBase {
-    address public constant RANDOMNESS_SENDER = 0x9c789bc7F2B5c6619Be1572A39F2C3d6f33001dC;
+    // RandomnessSender proxy address on Filecoin calibration testnet
+    address public constant RANDOMNESS_SENDER = 0x9c789bc7F2B5c6619Be1572A39F2C3d6f33001dC; 
 
     bytes32 public randomness;
     uint256 public requestId;
