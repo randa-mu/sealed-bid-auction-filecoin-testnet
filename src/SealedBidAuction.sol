@@ -169,7 +169,6 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
 
     /// @dev Phase 3. Auction Finalization
     /// @notice Allows bidders (except the highest bidder) to withdraw refundable reserve amounts.
-    /// @return The amount to withdraw as a refund.
     function withdrawRefund() external onlyAfter(biddingEndBlock) onlyAfterBidsUnsealed nonReentrant {
         require(msg.sender != highestBidder, "Highest bidder cannot withdraw refund.");
         Bid memory bid = bids[msg.sender];
@@ -182,7 +181,6 @@ contract SealedBidAuction is ISealedBidAuction, AbstractBlocklockReceiver, Reent
 
     /// @dev Fulfill the highest bid after the bidding ends and bids are unsealed.
     /// @notice Only the highest bidder can fulfill the bid and pay the difference.
-    /// @param msg.value The value sent in the transaction must equal the highest bid minus the reserve price.
     function fulfillHighestBid() external payable onlyAfter(biddingEndBlock) onlyAfterBidsUnsealed {
         require(highestBid > 0, "Highest bid is zero.");
         require(msg.sender == highestBidder, "Only the highest bidder can fulfil.");
