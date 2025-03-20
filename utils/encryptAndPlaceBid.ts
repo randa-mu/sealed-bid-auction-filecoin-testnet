@@ -46,7 +46,7 @@ async function encryptAndPlaceBid(
         const ciphertext = blocklockjs.encrypt(encodedMessage, blockHeight, BLOCKLOCK_DEFAULT_PUBLIC_KEY);
 
         // Send sealed bid transaction
-        const reservePrice = await sealedBidContract.reservePrice();
+        const reservePrice = await sealedBidContract.RESERVE_PRICE();
         const tx = await sealedBidContract.placeSealedBid(encodeCiphertextToSolidity(ciphertext), { value: reservePrice });
         const receipt = await tx.wait(1);
 
@@ -71,7 +71,7 @@ async function encryptAndPlaceBid(
 async function main() {
     // Change these values as needed
     const PRIVATE_KEY = process.env.CALIBRATION_TESTNET_PRIVATE_KEY;
-    const CONTRACT_ADDRESS = "0xF3bbd8D0208b3d0B43014DF3c596dFd349d09E46";
+    const CONTRACT_ADDRESS = "0xF9FB4cA00fd8249Ad1Db13433D94d990eD9F6F36";
     const BID_AMOUNT = "4"; // Bid amount in ETH
 
     // Ensure required values are provided
