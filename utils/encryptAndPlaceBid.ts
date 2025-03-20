@@ -36,6 +36,7 @@ async function encryptAndPlaceBid(
         // Get block height for bidding deadline
         const blockHeight = await sealedBidContract.biddingEndBlock();
 
+        // Encode message for encryption
         const msg = ethers.parseEther(bidAmount);
         const encoder = new SolidityEncoder()
         const msgBytes = encoder.encodeUint256(msg);
@@ -70,7 +71,7 @@ async function encryptAndPlaceBid(
 async function main() {
     // Change these values as needed
     const PRIVATE_KEY = process.env.CALIBRATION_TESTNET_PRIVATE_KEY;
-    const CONTRACT_ADDRESS = "0x68Ded4e9670f507934fBc9D2d8f07b4F3E471EbD";
+    const CONTRACT_ADDRESS = "0xF3bbd8D0208b3d0B43014DF3c596dFd349d09E46";
     const BID_AMOUNT = "4"; // Bid amount in ETH
 
     // Ensure required values are provided
