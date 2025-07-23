@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.28;
+pragma solidity ^0.8.28;
 
 import {Test, console} from "forge-std/Test.sol";
 
 import {SignatureSchemeAddressProvider} from
     "@blocklock-solidity/src/signature-schemes/SignatureSchemeAddressProvider.sol";
-import {SignatureSender} from "@blocklock-solidity/src/signature-requests/SignatureSender.sol";
 import {BlocklockSender} from "@blocklock-solidity/src/blocklock/BlocklockSender.sol";
-import {BlocklockSignatureScheme} from "@blocklock-solidity/src/blocklock/BlocklockSignatureScheme.sol";
+import {BlocklockSignatureScheme} from "@blocklock-solidity/src/signature-schemes/BlocklockSignatureScheme.sol";
 import {DecryptionSender} from "@blocklock-solidity/src/decryption-requests/DecryptionSender.sol";
 import {BLS} from "@blocklock-solidity/src/libraries/BLS.sol";
 import {TypesLib} from "@blocklock-solidity/src/libraries/TypesLib.sol";
@@ -68,7 +67,7 @@ contract SealedBidAuctionTest is Test {
         vm.startPrank(owner);
 
         SignatureSchemeAddressProvider signatureSchemeAddressProvider = new SignatureSchemeAddressProvider(owner);
-        BlocklockSignatureScheme blocklockScheme = new BlocklockSignatureScheme();
+        BlocklockSignatureScheme blocklockScheme = new BlocklockSignatureScheme(pk.x, pk.y);
         signatureSchemeAddressProvider.updateSignatureScheme(SCHEME_ID, address(blocklockScheme));
 
         // deploy implementation contracts for decryption and blocklock senders
@@ -87,7 +86,7 @@ contract SealedBidAuctionTest is Test {
         blocklock = BlocklockSender(address(blocklockSenderProxy));
 
         // initialize the contracts
-        decryptionSender.initialize(pk.x, pk.y, owner, address(signatureSchemeAddressProvider));
+        decryptionSender.initialize(owner, address(signatureSchemeAddressProvider));
         blocklock.initialize(owner, address(decryptionSender));
 
         auction = new SealedBidAuction(biddingEndBlock, address(blocklockSenderProxy));
@@ -105,7 +104,7 @@ contract SealedBidAuctionTest is Test {
     function test_BidPlacement() public {
         vm.deal(bidder, 1 ether); // Give bidder 1 ether for reserve price payment requirement
         vm.startPrank(bidder);
-        auction.placeSealedBid{value: auction.RESERVE_PRICE()}(sealedBid); // Place a sealed bid of 3 ether in wei
+        auction.placeSealedBid{value: auction.RESERVE_PRICE()}(450000000, sealedBid); // Place a sealed bid of 3 ether in wei
         assertEq(auction.totalBids(), 1, "Bid count should be 1");
         vm.stopPrank();
     }
@@ -114,7 +113,7 @@ contract SealedBidAuctionTest is Test {
         // First, place a bid
         vm.deal(bidder, 1 ether);
         vm.startPrank(bidder);
-        uint256 bidID = auction.placeSealedBid{value: auction.RESERVE_PRICE()}(sealedBid);
+        uint256 bidID = auction.placeSealedBid{value: auction.RESERVE_PRICE()}(450000000, sealedBid);
         vm.stopPrank();
 
         // Move to the auction end block to end the auction
@@ -124,7 +123,7 @@ contract SealedBidAuctionTest is Test {
         // This should also decrypt the sealed bid
         vm.startPrank(owner);
 
-        decryptionSender.fulfilDecryptionRequest(bidID, decryptionKey, signature);
+        decryptionSender.fulfillDecryptionRequest(bidID, decryptionKey, signature);
 
         vm.stopPrank();
 
@@ -145,7 +144,7 @@ contract SealedBidAuctionTest is Test {
         // Bidder places a bid
         vm.deal(bidder, 5 ether);
         vm.startPrank(bidder);
-        uint256 bidID1 = auction.placeSealedBid{value: auction.RESERVE_PRICE()}(sealedBid);
+        uint256 bidID1 = auction.placeSealedBid{value: auction.RESERVE_PRICE()}(450000000, sealedBid);
         vm.stopPrank();
 
         // Move to the auction end block to end the auction
@@ -154,7 +153,7 @@ contract SealedBidAuctionTest is Test {
         // Receive the decryption key for the bid id from the timelock contract
         vm.startPrank(owner);
 
-        decryptionSender.fulfilDecryptionRequest(bidID1, decryptionKey, signature);
+        decryptionSender.fulfillDecryptionRequest(bidID1, decryptionKey, signature);
 
         vm.stopPrank();
 
@@ -170,7 +169,7 @@ contract SealedBidAuctionTest is Test {
         // Bidder places a bid
         vm.deal(bidder, 5 ether);
         vm.startPrank(bidder);
-        uint256 bidID1 = auction.placeSealedBid{value: auction.RESERVE_PRICE()}(sealedBid);
+        uint256 bidID1 = auction.placeSealedBid{value: auction.RESERVE_PRICE()}(450000000, sealedBid);
         vm.stopPrank();
 
         // Move to the auction end block to end the auction
@@ -179,7 +178,7 @@ contract SealedBidAuctionTest is Test {
         // Receive the decryption key for the bid id from the timelock contract
         vm.startPrank(owner);
 
-        decryptionSender.fulfilDecryptionRequest(bidID1, decryptionKey, signature);
+        decryptionSender.fulfillDecryptionRequest(bidID1, decryptionKey, signature);
 
         vm.stopPrank();
 
@@ -201,7 +200,7 @@ contract SealedBidAuctionTest is Test {
         // Bidder places a bid
         vm.deal(bidder, 5 ether);
         vm.startPrank(bidder);
-        uint256 bidID1 = auction.placeSealedBid{value: auction.RESERVE_PRICE()}(sealedBid);
+        uint256 bidID1 = auction.placeSealedBid{value: auction.RESERVE_PRICE()}(450000000, sealedBid);
         vm.stopPrank();
 
         // Move to the auction end block to end the auction
@@ -210,7 +209,7 @@ contract SealedBidAuctionTest is Test {
         // Receive the decryption key for the bid id from the timelock contract
         vm.startPrank(owner);
 
-        decryptionSender.fulfilDecryptionRequest(bidID1, decryptionKey, signature);
+        decryptionSender.fulfillDecryptionRequest(bidID1, decryptionKey, signature);
 
         vm.stopPrank();
 

@@ -10,22 +10,13 @@ interface PointG2 {
   y: [bigint, bigint];
 }
 
-interface Ciphertext {
-  u: PointG2;
-  v: string;
-  w: string;
-}
-
-interface BidResponse {
-  sealedBid: Ciphertext;
-  decryptionKey: string;
-  unsealedBid: bigint;
-  bidder: string;
-  revealed: boolean;
+interface BidResult {
+  highestBidAmount: bigint;
+  highestBidderAddress: string;
 }
 
 // Function to fetch bid details
-async function getBidDetails(bidID: bigint, contractAddress: string) {
+async function getHighestBid(contractAddress: string) {
   try {
     // Set up provider
     const provider = new ethers.JsonRpcProvider(process.env.TESTNET_RPC_URL);
@@ -42,21 +33,11 @@ async function getBidDetails(bidID: bigint, contractAddress: string) {
     console.log(`Bidding end block: ${blockLockHight}`);
 
     // Call the getBidWithBidID function
-    const bidDetails: BidResponse = await contract.getBidWithBidID(bidID);
-
-    // Convert the `bytes` fields to raw bytes if needed
-    const decryptionKeyBytes = ethers.hexlify(bidDetails.decryptionKey);
+    const result: BidResult = await contract.getHighestBid();
 
     // Log the current bid data
-    console.log("Sealed Bid:", {
-      U: { x: bidDetails.sealedBid.u.x, y: bidDetails.sealedBid.u.y },
-      V: bidDetails.sealedBid.v,
-      W: bidDetails.sealedBid.w,
-    });
-    console.log("Decryption Key:", decryptionKeyBytes);
-    console.log("Unsealed Amount:", bidDetails.unsealedBid.toString());
-    console.log("Bidder Address:", bidDetails.bidder);
-    console.log("Revealed:", bidDetails.revealed);
+    console.log(`Highest Bid Amount: ${ethers.formatEther(result.highestBidAmount)} ETH`);
+    console.log(`Highest Bidder: ${result.highestBidderAddress}`);
   } catch (error) {
     console.error("Error fetching bid details:", error);
   }
@@ -64,24 +45,13 @@ async function getBidDetails(bidID: bigint, contractAddress: string) {
 
 // Main function to handle script execution
 async function main() {
-  // Get bid ID from command line arguments
-  const args = process.argv.slice(2);
-  if (args.length === 0) {
-    console.error("Usage: npm run getBid <bidID>");
-    console.error("Example: npm run getBid 119");
-    process.exit(1);
-  }
-
-  const bidId: string = args[0];
   const contractAddress = process.env.BID_CONTRACT_ADDRESS; // Change this as needed
   if (!contractAddress) {
     throw new Error("BID_CONTRACT_ADDRESS environment variable is not set");
   }
-  // Convert bid ID to BigInt
-  const bidID = BigInt(bidId);
 
   // Fetch bid details
-  await getBidDetails(bidID, contractAddress);
+  await getHighestBid(contractAddress);
 }
 
 // Run the main function
